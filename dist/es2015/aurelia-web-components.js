@@ -150,6 +150,7 @@ const createElementContainer = (parent, element, instruction, children, partRepl
 class CustomElementRegistry {
     constructor(container, viewCompiler, viewResources) {
         this.fallbackPrefix = 'au-';
+        this.forcePrefix = false;
         this._lookup = Object.create(null);
         this.container = container;
         this.viewCompiler = viewCompiler;
@@ -172,7 +173,7 @@ class CustomElementRegistry {
             behavior: behavior,
             classDefinition: classDefinition
         };
-        if (tagName.indexOf('-') === -1) {
+        if ((this.forcePrefix && !tagName.startsWith(this.fallbackPrefix)) || tagName.indexOf('-') === -1) {
             tagName = this.fallbackPrefix + tagName;
         }
         customElements.define(tagName, classDefinition);
